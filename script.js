@@ -1,29 +1,99 @@
-var mymap = L.map('mapid').setView([38.63775922635261, -90.28368046396037], 13);
-//https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
-//'http://a.tile.stamen.com/toner/{z}/{x}/{y}.png'
-//https://wiki.openstreetmap.org/wiki/Tile_servers
-L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+var map = L.map('map').setView([38.639145926581065,-90.28468464683782], 10);
+
+  // load a tile layer
+ L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
 	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 	subdomains: 'abcd',
-	minZoom: 1,
-	maxZoom: 16,
-	ext: 'jpg'
-}).addTo(mymap);
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+}).addTo(map);
 
-var marker = L.marker([38.63672876590212, -90.24674730564345]).addTo(mymap);
+function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+    }
+}
 
-var marker2 = L.marker([38.63816176328897, -90.25104626536422]).addTo(mymap);
+var geojsonFeature = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Scottish Arms",
+        "popupContent": "<b>Scottish Arms</b><br>Scottish Food"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.24674730564345,
+          38.63672876590212
+        ]
+      }
+    },
+     {
+      "type": "Feature",
+      "properties": {
+        "Name": "2Shae Cafe",
+        "popupContent": "<b>2Shae Cafe</b><br>Breakfast"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.2744901289432,
+          38.64751484426265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Scarlett's",
+        "popupContent": "<b>Scarlett's</b><br>Wine Bar"
+        
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.25104626536422,
+          38.6381617632889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Mi Ranchito",
+        "popupContent": "<b>Mi Ranchito</b><br>Mexican"
+       
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.30894447950988,
+          38.661539699331904
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lorenzo's Trattoria",
+        "popupContent": "<b>Lorenzo's Trattoria</b><br>Italian"
+       
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.27511168787689,
+          38.6171484198663
+        ]
+      }
+    }
+  ]
+};
 
-var marker3 = L.marker([38.661539699331904, -90.30894447950988]).addTo(mymap);
-
-var marker4 = L.marker([38.61714841986633, -90.27511168787689]).addTo(mymap);
-
-var marker5 = L.marker([38.64751484426265, -90.2744901289432]).addTo(mymap);
-
-
-
-marker.bindPopup("<b>Scottish Arms</b>.").openPopup();
-marker2.bindPopup("<b>Scarlett's Wine Bar</b>.").openPopup();
-marker3.bindPopup("<b>Mi Ranchito</b>.").openPopup();
-marker4.bindPopup("<b>Lorenzo's Trattoria</b>.").openPopup();
-marker4.bindPopup("<b>2Shae Cafe</b>.").openPopup();
+L.geoJSON(geojsonFeature, {
+    onEachFeature: onEachFeature
+}).addTo(map);
